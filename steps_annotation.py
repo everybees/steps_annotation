@@ -29,8 +29,8 @@ for i in range(num_steps):
         rewrite_reason = st.text_area(f"Reason for rewrite for step {i+1}", key=f'rewrite_reason_{i}')
         
         # Add additional fields for incorrect steps
-        step_data['original_step'] = original_step
-        step_data['rewrite'] = rewrite
+        step_data['original_step'] = original_step  # Keep as entered in LaTeX
+        step_data['rewrite'] = rewrite              # Keep as entered in LaTeX
         step_data['rewrite_reason'] = rewrite_reason
     
     # Append the step data to the steps_data dictionary
@@ -40,8 +40,8 @@ for i in range(num_steps):
 if steps_data:
     st.write("### Copyable List of Objects:")
     
-    # Convert steps_data to a string format
-    copyable_output = "[\n" + ",\n".join([f'"{key}": {value}' for key, value in steps_data.items()]) + "\n]"
+    # Convert steps_data to a string format but avoid stringifying LaTeX inputs
+    copyable_output = "[\n" + ",\n".join([f'"{key}": {{"accuracy": "{value["accuracy"]}", "llm_or_python": "{value["llm_or_python"]}", "original_step": {value.get("original_step", None)}, "rewrite": {value.get("rewrite", None)}, "rewrite_reason": "{value.get("rewrite_reason", "")}"}}' for key, value in steps_data.items()]) + "\n]"
     
     # Show the output in a text area that the user can copy
     st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=300)
