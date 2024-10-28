@@ -41,8 +41,8 @@ for i in range(num_steps):
 if steps_data:
     st.write("### Copyable List of Objects:")
     
-    # Convert the list of objects (steps_data) to a string format
-    copyable_output = "\n".join([str(step) for step in steps_data])
+    # Convert steps_data to a string format
+    copyable_output = "[\n" + ",\n".join([f'"{key}": {value}' for key, value in steps_data.items()]) + "\n]"
     
     # Show the output in a text area that the user can copy
-    st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=200)
+    st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=300)
