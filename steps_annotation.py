@@ -1,7 +1,7 @@
 import streamlit as st
 
-# Initialize a list to store the steps data
-steps_data = []
+# Initialize a dictionary to store the steps data
+steps_data = {}
 
 # Input: Number of steps to evaluate
 num_steps = st.number_input("Enter the number of steps to evaluate", min_value=1, max_value=10)
@@ -16,26 +16,25 @@ for i in range(num_steps):
     # LLM or Python decision for the current step
     llm_or_python = st.radio(f"Should step {i+1} be solved by LLM or Python?", ('LLM', 'Python'), key=f'llm_or_python_{i}')
     
+    # Initialize the step data dictionary
+    step_data = {
+        'accuracy': accuracy,
+        'llm_or_python': llm_or_python
+    }
+    
     # If the step is not correct, collect more data
     if accuracy == 'No':
         original_step = st.text_area(f"Original step for step {i+1}", key=f'original_step_{i}')
         rewrite = st.text_area(f"Rewrite for step {i+1}", key=f'rewrite_{i}')
         rewrite_reason = st.text_area(f"Reason for rewrite for step {i+1}", key=f'rewrite_reason_{i}')
         
-        # Append the step information as a dictionary to the list
-        steps_data.append({
-            'accuracy': accuracy,
-            'llm_or_python': llm_or_python,
-            'original_step': original_step,
-            'rewrite': rewrite,
-            'rewrite_reason': rewrite_reason
-        })
-    else:
-        # Append only the basic step information if the step is correct
-        steps_data.append({
-            'accuracy': accuracy,
-            'llm_or_python': llm_or_python
-        })
+        # Add additional fields for incorrect steps
+        step_data['original_step'] = original_step
+        step_data['rewrite'] = rewrite
+        step_data['rewrite_reason'] = rewrite_reason
+    
+    # Append the step data to the steps_data dictionary
+    steps_data[f'step_{i+1}'] = step_data
 
 # Display the list of steps data as a copyable text
 if steps_data:
