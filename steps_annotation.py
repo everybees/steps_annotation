@@ -44,22 +44,4 @@ if steps_data:
     copyable_output = "[\n" + ",\n".join([f'"{key}": {value}' for key, value in steps_data.items()]) + "\n]"
     
     # Show the output in a text area that the user can copy
-    st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=300, key="output_area")
-
-    # JavaScript for copying to clipboard
-    st.write(
-        f"""
-        <button onclick="copyToClipboard()">Copy to Clipboard</button>
-        <script>
-        function copyToClipboard() {{
-            var copyText = document.getElementById("output_area");
-            navigator.clipboard.writeText(copyText.value).then(function() {{
-                alert("Copied to clipboard!");
-            }}, function(err) {{
-                console.error('Async: Could not copy text: ', err);
-            }});
-        }}
-        </script>
-        """, 
-        unsafe_allow_html=True
-    )
+    st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=300)
