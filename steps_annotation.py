@@ -46,21 +46,19 @@ if steps_data:
     # Show the output in a text area that the user can copy
     st.text_area("Generated Steps Data (Copy below):", value=copyable_output, height=300)
 
-    # Add the copy button using JavaScript
+    # Create a hidden text input to enable JavaScript copying
     st.write(
-        """
+        f"""
+        <input type="text" value='{copyable_output}' id="copyText" style="position:absolute; left:-9999px;">
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
         <script>
-        function copyToClipboard() {
-            const copyText = `""" + copyable_output.replace("\n", "\\n").replace("\"", "\\\"") + """`;
-            const textArea = document.createElement('textarea');
-            textArea.value = copyText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('Text copied to clipboard');
-        }
+        function copyToClipboard() {{
+            var copyText = document.getElementById("copyText");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Copied to clipboard!");
+        }}
         </script>
-        """, unsafe_allow_html=True
+        """, 
+        unsafe_allow_html=True
     )
